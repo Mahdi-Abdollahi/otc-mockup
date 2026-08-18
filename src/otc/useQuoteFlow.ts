@@ -24,12 +24,13 @@ export function useQuoteFlow() {
       .catch((error) => {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
-        } else {
-          dispatch({
-            type: QuoteAction.ORDER_FAILED,
-            payload: { reason: error.message },
-          });
         }
+        const message =
+          error instanceof Error ? error.message : "Unknown error";
+        dispatch({
+          type: QuoteAction.ORDER_FAILED,
+          payload: { reason: message },
+        });
         console.error(error);
       });
 
