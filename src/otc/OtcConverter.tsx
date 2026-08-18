@@ -13,6 +13,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { CancelButton } from "./components/CancelButton";
 
 export function OtcConverter() {
   const { state, dispatch } = useQuoteFlow();
@@ -27,6 +28,13 @@ export function OtcConverter() {
     dispatch({
       type: QuoteAction.AMOUNT_SUBMITTED,
       payload: { request: { amount: parsed, fromCurrency, toCurrency } },
+    });
+  };
+
+  const handleCancel = () => {
+    console.log("handleCancel");
+    dispatch({
+      type: QuoteAction.CANCEL,
     });
   };
 
@@ -117,9 +125,14 @@ export function OtcConverter() {
           state.status === QuoteStatus.CONFIRMING) && (
           <CardFooter>
             {state.status === QuoteStatus.QUOTED && (
-              <ConfirmButton
-                onClick={() => dispatch({ type: QuoteAction.CONFIRM_CLICKED })}
-              />
+              <div className="w-full flex flex-col gap-2">
+                <ConfirmButton
+                  onClick={() =>
+                    dispatch({ type: QuoteAction.CONFIRM_CLICKED })
+                  }
+                />
+                <CancelButton onClick={handleCancel} />
+              </div>
             )}
             {(state.status === QuoteStatus.IDLE ||
               state.status === QuoteStatus.QUOTING) && (

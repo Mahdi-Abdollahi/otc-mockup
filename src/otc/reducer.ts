@@ -56,6 +56,19 @@ export function quoteReducer(
     case "RESET":
       return { status: QuoteStatus.IDLE };
 
+    case "CANCEL":
+      console.log("CANCEL ACTION");
+      if (
+        state.status === QuoteStatus.CONFIRMING ||
+        state.status === QuoteStatus.QUOTED
+      ) {
+        return {
+          ...state,
+          status: QuoteStatus.IDLE,
+        };
+      }
+      return state;
+
     default:
       return state;
   }

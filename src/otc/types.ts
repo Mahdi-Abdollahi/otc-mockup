@@ -80,7 +80,8 @@ export type QuoteActionPayload =
   | { type: "CONFIRM_CLICKED" }
   | { type: "ORDER_SUCCEEDED" }
   | { type: "ORDER_FAILED"; payload: { reason: string } }
-  | { type: "RESET" };
+  | { type: "RESET" }
+  | { type: "CANCEL" };
 
 export const QuoteAction = {
   AMOUNT_SUBMITTED: "AMOUNT_SUBMITTED",
@@ -90,6 +91,7 @@ export const QuoteAction = {
   ORDER_SUCCEEDED: "ORDER_SUCCEEDED",
   ORDER_FAILED: "ORDER_FAILED",
   RESET: "RESET",
+  CANCEL: "CANCEL",
 } as const;
 
 export type QuoteAction = (typeof QuoteAction)[keyof typeof QuoteAction];
