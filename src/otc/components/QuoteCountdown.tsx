@@ -17,14 +17,18 @@ export function QuoteCountdown({ expiresAt, onExpire }: QuoteCountdownProps) {
         onExpire();
       }
     }, 250);
-
     return () => clearInterval(interval);
   }, [expiresAt, onExpire]);
 
   const secondsLeft = Math.max(0, Math.ceil(remainingMs / 1000));
+  const isUrgent = secondsLeft <= 5;
 
   return (
-    <span className="text-sm text-muted-foreground tabular-nums">
+    <span
+      className={`font-figures text-sm font-medium ${
+        isUrgent ? "text-amber-500" : "text-emerald-500"
+      }`}
+    >
       {secondsLeft}s
     </span>
   );

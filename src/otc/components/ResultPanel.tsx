@@ -1,4 +1,5 @@
 import type { QuoteRequest, QuoteResponse } from "../types";
+import { Button } from "@/components/ui/button";
 
 type ResultPanelProps =
   | {
@@ -14,40 +15,40 @@ export function ResultPanel(props: ResultPanelProps) {
   if (props.status === "success") {
     const { request, response } = props;
     return (
-      <div className="rounded-md border border-green-500/30 bg-green-500/10 p-4">
-        <p className="font-medium text-green-700">Trade completed</p>
-        <p className="text-sm text-muted-foreground">
-          {request.amount} {request.fromCurrency} → {request.toCurrency} at rate{" "}
-          {response.rate.toFixed(4)}
+      <div className="space-y-3 rounded-md border border-emerald-500/30 bg-emerald-500/10 p-4">
+        <p className="font-medium text-emerald-500">Trade completed</p>
+        <p className="font-figures text-sm text-muted-foreground">
+          {request.amount} {request.fromCurrency} →{" "}
+          {(request.amount * response.rate).toFixed(2)} {request.toCurrency}
         </p>
-        <button onClick={props.onReset} className="mt-3 text-sm underline">
+        <Button variant="outline" size="sm" onClick={props.onReset}>
           Start a new conversion
-        </button>
+        </Button>
       </div>
     );
   }
 
   if (props.status === "failed") {
     return (
-      <div className="rounded-md border border-red-500/30 bg-red-500/10 p-4">
-        <p className="font-medium text-red-700">Trade failed</p>
+      <div className="space-y-3 rounded-md border border-destructive/30 bg-destructive/10 p-4">
+        <p className="font-medium text-destructive">Trade failed</p>
         <p className="text-sm text-muted-foreground">{props.reason}</p>
-        <button onClick={props.onReset} className="mt-3 text-sm underline">
+        <Button variant="outline" size="sm" onClick={props.onReset}>
           Try again
-        </button>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="rounded-md border border-yellow-500/30 bg-yellow-500/10 p-4">
-      <p className="font-medium text-yellow-700">Quote expired</p>
+    <div className="space-y-3 rounded-md border border-amber-500/30 bg-amber-500/10 p-4">
+      <p className="font-medium text-amber-500">Quote expired</p>
       <p className="text-sm text-muted-foreground">
         The price is no longer valid.
       </p>
-      <button onClick={props.onReset} className="mt-3 text-sm underline">
+      <Button variant="outline" size="sm" onClick={props.onReset}>
         Get a new quote
-      </button>
+      </Button>
     </div>
   );
 }

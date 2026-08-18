@@ -46,6 +46,9 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --font-mono-figures:
+    ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", monospace;
 }
 
 :root {
@@ -127,4 +130,9 @@
   html {
     @apply font-sans;
   }
+}
+
+@utility font-figures {
+  font-family: var(--font-mono-figures);
+  font-variant-numeric: tabular-nums;
 }

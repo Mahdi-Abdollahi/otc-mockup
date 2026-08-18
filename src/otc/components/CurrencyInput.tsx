@@ -19,8 +19,8 @@ export function CurrencyInput({
   disabled,
 }: CurrencyInputProps) {
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-2 rounded-md border bg-muted/30 px-3 py-2">
         <Input
           type="number"
           inputMode="decimal"
@@ -28,26 +28,28 @@ export function CurrencyInput({
           value={amount}
           onChange={(e) => onAmountChange(e.target.value)}
           disabled={disabled}
-          className="flex-1"
+          className="font-figures border-0 bg-transparent p-0 text-lg shadow-none focus-visible:ring-0"
         />
-        <span className="w-16 text-sm font-medium">{fromCurrency}</span>
+        <span className="text-sm font-medium text-muted-foreground">
+          {fromCurrency}
+        </span>
       </div>
 
-      <button
-        type="button"
-        onClick={onSwap}
-        disabled={disabled}
-        className="self-center text-xs text-muted-foreground hover:text-foreground"
-        aria-label="Swap currencies"
-      >
-        ⇅ swap
-      </button>
+      <div className="flex justify-center">
+        <button
+          type="button"
+          onClick={onSwap}
+          disabled={disabled}
+          aria-label="Swap currencies"
+          className="rounded-full border bg-background p-1.5 text-muted-foreground transition hover:bg-muted hover:text-foreground disabled:opacity-40"
+        >
+          ⇅
+        </button>
+      </div>
 
-      <div className="flex items-center gap-2">
-        <div className="flex-1 rounded-md border px-3 py-2 text-sm text-muted-foreground">
-          {/* Receive amount is derived from the quote once one exists — left blank here */}
-        </div>
-        <span className="w-16 text-sm font-medium">{toCurrency}</span>
+      <div className="flex items-center gap-2 rounded-md border bg-muted/10 px-3 py-2 text-muted-foreground">
+        <span className="font-figures flex-1 text-lg">—</span>
+        <span className="text-sm font-medium">{toCurrency}</span>
       </div>
     </div>
   );
