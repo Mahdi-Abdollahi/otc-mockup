@@ -1,6 +1,13 @@
 import type { QuoteRequest, QuoteResponse } from "./types";
 
-export function fetchQuote(request: QuoteRequest): Promise<QuoteResponse> {
+export function fetchQuote(
+  request: QuoteRequest,
+  signal?: AbortSignal,
+): Promise<QuoteResponse> {
+  if (signal?.aborted) {
+    return Promise.reject(new DOMException("Aborted", "AbortError"));
+  }
+
   if (request.amount <= 0) {
     return Promise.reject(new Error("Amount must be greater than 0"));
   }
@@ -22,7 +29,7 @@ export function fetchQuote(request: QuoteRequest): Promise<QuoteResponse> {
   const orderId = crypto.randomUUID();
 
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       if (Math.random() < 0.1) {
         reject(new Error("Quote failed"));
         return;
@@ -33,5 +40,12 @@ export function fetchQuote(request: QuoteRequest): Promise<QuoteResponse> {
         expiresAt,
       });
     }, 800);
+
+    if (signal) {
+      signal.addEventListener("abort", () => {
+        clearTimeout(timeout);
+        reject(new DOMException("Aborted", "AbortError")); // how real code distinguishes "cancelled on purpose" from "cancelled due to error"
+      });
+    }
   });
 }

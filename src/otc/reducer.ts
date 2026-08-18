@@ -1,55 +1,56 @@
 // reducer.ts
 
-import { QuoteStatus, type QuoteAction, type QuoteState } from "./types";
+import { QuoteStatus, type QuoteActionPayload, type QuoteState } from "./types";
 
 export function quoteReducer(
   state: QuoteState,
-  action: QuoteAction,
+  action: QuoteActionPayload,
 ): QuoteState {
   switch (action.type) {
     case "AMOUNT_SUBMITTED":
       if (state.status !== QuoteStatus.IDLE) return state;
-      return { status: QuoteStatus.QUOTING, request: action.request };
+      return { status: QuoteStatus.QUOTING, request: action.payload.request };
 
     case "QUOTE_RECEIVED":
       if (state.status !== QuoteStatus.QUOTING) return state;
       return {
+        ...state,
         status: QuoteStatus.QUOTED,
-        request: state.request,
-        response: action.response,
+        response: action.payload.response,
       };
 
     case "QUOTE_EXPIRED":
       if (state.status !== QuoteStatus.QUOTED) return state;
       return {
+        ...state,
         status: QuoteStatus.EXPIRED,
-        request: state.request,
-        response: state.response,
       };
 
     case "CONFIRM_CLICKED":
       if (state.status !== QuoteStatus.QUOTED) return state;
       return {
+        ...state,
         status: QuoteStatus.CONFIRMING,
-        request: state.request,
-        response: state.response,
       };
 
     case "ORDER_SUCCEEDED":
       if (state.status !== QuoteStatus.CONFIRMING) return state;
       return {
+        ...state,
         status: QuoteStatus.SUCCESS,
-        request: state.request,
-        response: state.response,
       };
 
     case "ORDER_FAILED":
-      if (state.status !== QuoteStatus.CONFIRMING) return state;
+      if (
+        state.status !== QuoteStatus.QUOTING &&
+        state.status !== QuoteStatus.CONFIRMING
+      ) {
+        return state;
+      }
       return {
+        ...state,
         status: QuoteStatus.FAILED,
-        request: state.request,
-        response: state.response,
-        reason: action.reason,
+        reason: action.payload.reason,
       };
 
     case "RESET":

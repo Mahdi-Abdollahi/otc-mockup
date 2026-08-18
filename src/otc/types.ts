@@ -53,8 +53,8 @@ export type QuoteExpiredState = {
 
 export type QuoteFailedState = {
   status: typeof QuoteStatus.FAILED;
-  request: QuoteRequest;
-  response: QuoteResponse;
+  request?: QuoteRequest;
+  response?: QuoteResponse;
   reason: string;
 };
 
@@ -73,11 +73,23 @@ export type QuoteState =
   | QuoteFailedState
   | QuoteSuccessState;
 
-export type QuoteAction =
-  | { type: "AMOUNT_SUBMITTED"; request: QuoteRequest }
-  | { type: "QUOTE_RECEIVED"; response: QuoteResponse }
+export type QuoteActionPayload =
+  | { type: "AMOUNT_SUBMITTED"; payload: { request: QuoteRequest } }
+  | { type: "QUOTE_RECEIVED"; payload: { response: QuoteResponse } }
   | { type: "QUOTE_EXPIRED" }
   | { type: "CONFIRM_CLICKED" }
   | { type: "ORDER_SUCCEEDED" }
-  | { type: "ORDER_FAILED"; reason: string }
+  | { type: "ORDER_FAILED"; payload: { reason: string } }
   | { type: "RESET" };
+
+export const QuoteAction = {
+  AMOUNT_SUBMITTED: "AMOUNT_SUBMITTED",
+  QUOTE_RECEIVED: "QUOTE_RECEIVED",
+  QUOTE_EXPIRED: "QUOTE_EXPIRED",
+  CONFIRM_CLICKED: "CONFIRM_CLICKED",
+  ORDER_SUCCEEDED: "ORDER_SUCCEEDED",
+  ORDER_FAILED: "ORDER_FAILED",
+  RESET: "RESET",
+} as const;
+
+export type QuoteAction = (typeof QuoteAction)[keyof typeof QuoteAction];
