@@ -49,3 +49,30 @@ export function fetchQuote(
     }
   });
 }
+
+export function submitOrder(
+  request: QuoteRequest,
+  response: QuoteResponse,
+  signal?: AbortSignal,
+): Promise<void> {
+  if (signal?.aborted) {
+    return Promise.reject(new DOMException("Aborted", "AbortError"));
+  }
+
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      if (Math.random() < 0.1) {
+        reject(new Error("Settlement failed. Please try again."));
+        return;
+      }
+      resolve();
+    }, 700);
+
+    if (signal) {
+      signal.addEventListener("abort", () => {
+        clearTimeout(timeout);
+        reject(new DOMException("Aborted", "AbortError"));
+      });
+    }
+  });
+}
