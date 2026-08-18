@@ -1,5 +1,7 @@
 import type { QuoteRequest, QuoteResponse } from "./types";
 
+const FAILURE_RATE = Number(import.meta.env.VITE_MOCK_FAILURE_RATE ?? 0.1);
+
 export function fetchQuote(
   request: QuoteRequest,
   signal?: AbortSignal,
@@ -30,7 +32,7 @@ export function fetchQuote(
 
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {
-      if (Math.random() < 0.1) {
+      if (Math.random() < FAILURE_RATE) {
         reject(new Error("Quote failed"));
         return;
       }

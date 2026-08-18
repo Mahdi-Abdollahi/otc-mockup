@@ -76,7 +76,10 @@ export function OtcConverter() {
                   {state.request.amount} {state.request.fromCurrency}
                 </span>
                 <span className="text-muted-foreground">→</span>
-                <span className="font-figures text-lg">
+                <span
+                  data-testid="quote-result"
+                  className="font-figures text-lg"
+                >
                   {(state.request.amount * state.response.rate).toFixed(2)}{" "}
                   {state.request.toCurrency}
                 </span>
