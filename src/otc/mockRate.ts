@@ -17,7 +17,7 @@ export function fetchQuote(
     );
   }
 
-  if (request.fromCurrency !== "USDT" && request.toCurrency !== "AED") {
+  if (request.fromCurrency !== "USDT" && request.fromCurrency !== "AED") {
     return Promise.reject(new Error("Invalid currency pair"));
   }
 

@@ -1,9 +1,10 @@
 import "./App.css";
+import { OtcConverter } from "./otc/OtcConverter";
 
 function App() {
   return (
     <div>
-      <h1>Hello World</h1>
+      <OtcConverter />
     </div>
   );
 }
