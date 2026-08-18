@@ -8,11 +8,14 @@ export const QuoteStatus = {
   SUCCESS: "SUCCESS",
 } as const;
 
+export type CurrencyCode = "USDT" | "AED";
+
 export type QuoteStatus = (typeof QuoteStatus)[keyof typeof QuoteStatus];
 
 export type QuoteRequest = {
   amount: number;
-  currency: string;
+  fromCurrency: CurrencyCode;
+  toCurrency: CurrencyCode;
 };
 
 export type QuoteResponse = {
