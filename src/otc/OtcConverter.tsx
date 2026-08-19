@@ -14,20 +14,33 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { CancelButton } from "./components/CancelButton";
+import { LiveRateTicker } from "./components/LiveRateTicker";
+import { useLiveRate } from "./useLiveRate";
+import { computeConvertedRate } from "./rate";
 
 export function OtcConverter() {
-  const { state, dispatch } = useQuoteFlow();
+  const { rate: liveRate } = useLiveRate();
+  const { state, dispatch } = useQuoteFlow(); // no longer takes liveRate
 
   const [amount, setAmount] = useState("");
   const [fromCurrency, setFromCurrency] = useState<CurrencyCode>("USDT");
   const [toCurrency, setToCurrency] = useState<CurrencyCode>("AED");
 
+  const estimatedAmount = (() => {
+    const parsed = Number(amount);
+    if (!parsed || parsed <= 0 || liveRate === null) return null;
+    return parsed * computeConvertedRate(liveRate, fromCurrency);
+  })();
+
   const handleSubmit = () => {
     const parsed = Number(amount);
-    if (!parsed || parsed <= 0) return;
+    if (!parsed || parsed <= 0 || liveRate === null) return;
     dispatch({
       type: QuoteAction.AMOUNT_SUBMITTED,
-      payload: { request: { amount: parsed, fromCurrency, toCurrency } },
+      payload: {
+        request: { amount: parsed, fromCurrency, toCurrency },
+        referenceRate: liveRate, // captured once, locked from here on
+      },
     });
   };
 
@@ -59,14 +72,18 @@ export function OtcConverter() {
         <CardContent className="space-y-4">
           {(state.status === QuoteStatus.IDLE ||
             state.status === QuoteStatus.QUOTING) && (
-            <CurrencyInput
-              amount={amount}
-              onAmountChange={setAmount}
-              fromCurrency={fromCurrency}
-              toCurrency={toCurrency}
-              onSwap={handleSwap}
-              disabled={state.status === QuoteStatus.QUOTING}
-            />
+            <div>
+              <LiveRateTicker />
+              <CurrencyInput
+                amount={amount}
+                onAmountChange={setAmount}
+                fromCurrency={fromCurrency}
+                toCurrency={toCurrency}
+                onSwap={handleSwap}
+                disabled={state.status === QuoteStatus.QUOTING}
+                estimatedAmount={estimatedAmount}
+              />
+            </div>
           )}
 
           {state.status === QuoteStatus.QUOTED && (

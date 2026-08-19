@@ -1,9 +1,11 @@
+import { computeConvertedRate } from "./rate";
 import type { QuoteRequest, QuoteResponse } from "./types";
 
 const FAILURE_RATE = Number(import.meta.env.VITE_MOCK_FAILURE_RATE ?? 0.1);
 
 export function fetchQuote(
   request: QuoteRequest,
+  referenceRate: number,
   signal?: AbortSignal,
 ): Promise<QuoteResponse> {
   if (signal?.aborted) {
@@ -23,12 +25,9 @@ export function fetchQuote(
     return Promise.reject(new Error("Invalid currency pair"));
   }
 
-  const expiresAt = Date.now() + 1000 * 15;
-
-  const baseRate = request.fromCurrency === "USDT" ? 3.67 : 1 / 3.67;
-  const rate = baseRate + (Math.random() - 0.5) * 0.02;
-
+  const rate = computeConvertedRate(referenceRate, request.fromCurrency);
   const orderId = crypto.randomUUID();
+  const expiresAt = Date.now() + 15_000;
 
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {

@@ -13,7 +13,7 @@ export function useQuoteFlow() {
 
     const controller = new AbortController();
 
-    fetchQuote(state.request, controller.signal)
+    fetchQuote(state.request, state.referenceRate, controller.signal)
       .then((quote) => {
         dispatch({
           type: QuoteAction.QUOTE_RECEIVED,

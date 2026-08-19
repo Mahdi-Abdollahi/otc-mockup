@@ -8,6 +8,7 @@ type CurrencyInputProps = {
   toCurrency: CurrencyCode;
   onSwap: () => void;
   disabled?: boolean;
+  estimatedAmount: number | null; // NEW
 };
 
 export function CurrencyInput({
@@ -17,6 +18,7 @@ export function CurrencyInput({
   toCurrency,
   onSwap,
   disabled,
+  estimatedAmount,
 }: CurrencyInputProps) {
   return (
     <div className="flex flex-col gap-1">
@@ -48,7 +50,9 @@ export function CurrencyInput({
       </div>
 
       <div className="flex items-center gap-2 rounded-md border bg-muted/10 px-3 py-2 text-muted-foreground">
-        <span className="font-figures flex-1 text-lg">—</span>
+        <span className="font-figures flex-1 text-lg">
+          {estimatedAmount !== null ? estimatedAmount.toFixed(2) : "—"}
+        </span>
         <span className="text-sm font-medium">{toCurrency}</span>
       </div>
     </div>

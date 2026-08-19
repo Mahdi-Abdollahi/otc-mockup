@@ -31,6 +31,7 @@ export type QuoteIdleState = {
 export type QuoteQuotingState = {
   status: typeof QuoteStatus.QUOTING;
   request: QuoteRequest;
+  referenceRate: number;
 };
 
 export type QuoteQuotedState = {
@@ -74,7 +75,10 @@ export type QuoteState =
   | QuoteSuccessState;
 
 export type QuoteActionPayload =
-  | { type: "AMOUNT_SUBMITTED"; payload: { request: QuoteRequest } }
+  | {
+      type: "AMOUNT_SUBMITTED";
+      payload: { request: QuoteRequest; referenceRate: number };
+    }
   | { type: "QUOTE_RECEIVED"; payload: { response: QuoteResponse } }
   | { type: "QUOTE_EXPIRED" }
   | { type: "CONFIRM_CLICKED" }

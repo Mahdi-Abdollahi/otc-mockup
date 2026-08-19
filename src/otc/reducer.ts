@@ -9,7 +9,11 @@ export function quoteReducer(
   switch (action.type) {
     case "AMOUNT_SUBMITTED":
       if (state.status !== QuoteStatus.IDLE) return state;
-      return { status: QuoteStatus.QUOTING, request: action.payload.request };
+      return {
+        status: QuoteStatus.QUOTING,
+        request: action.payload.request,
+        referenceRate: action.payload.referenceRate,
+      };
 
     case "QUOTE_RECEIVED":
       if (state.status !== QuoteStatus.QUOTING) return state;
