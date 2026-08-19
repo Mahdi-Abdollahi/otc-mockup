@@ -17,7 +17,7 @@ export function useLiveRate(): LiveRateState {
     async function poll() {
       try {
         const res = await fetch(
-          "https://api.binance.com/api/v3/ticker/price?symbol=DOGEUSDT",
+          "https://api.binance.com/api/v3/ticker/price?symbol=USDCUSDT",
           { signal: controller.signal },
         );
         if (!res.ok) throw new Error("Rate fetch failed");
