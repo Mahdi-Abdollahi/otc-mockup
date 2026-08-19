@@ -62,7 +62,6 @@ export function quoteReducer(
         state.status === QuoteStatus.QUOTED
       ) {
         return {
-          ...state,
           status: QuoteStatus.IDLE,
         };
       }
