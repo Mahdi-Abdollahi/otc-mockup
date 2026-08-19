@@ -23,4 +23,5 @@ export default defineConfig({
   test: {
     exclude: ["tests/**", "node_modules/**"],
   },
+  base: "/otc-mockup/",
 });
