@@ -15,6 +15,7 @@ describe("quoteReducer", () => {
       type: QuoteAction.AMOUNT_SUBMITTED,
       payload: {
         request: { amount: 100, fromCurrency: "USDT", toCurrency: "AED" },
+        referenceRate: 3.6,
       },
     });
     expect(result.status).toBe(QuoteStatus.QUOTING);
@@ -24,6 +25,7 @@ describe("quoteReducer", () => {
     const quotingState: QuoteState = {
       status: QuoteStatus.QUOTING,
       request: { amount: 1000, fromCurrency: "USDT", toCurrency: "AED" },
+      referenceRate: 3.6,
     };
     const result = quoteReducer(quotingState, {
       type: QuoteAction.QUOTE_RECEIVED,
@@ -65,6 +67,7 @@ describe("quoteReducer", () => {
     const quotingState: QuoteState = {
       status: QuoteStatus.QUOTING,
       request: { amount: 1000, fromCurrency: "USDT", toCurrency: "AED" },
+      referenceRate: 3.6,
     };
     const result = quoteReducer(quotingState, {
       type: QuoteAction.CONFIRM_CLICKED,

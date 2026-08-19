@@ -66,6 +66,8 @@ export function submitOrder(
         reject(new Error("Settlement failed. Please try again."));
         return;
       }
+      console.log("request", request);
+      console.log("response", response);
       resolve();
     }, 700);
 
